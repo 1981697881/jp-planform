@@ -13,7 +13,7 @@
               </el-option>
             </el-select>
           </el-form-item>-->
-          <el-form-item :label="'所属上级'" prop="select">
+          <el-form-item :label="'产品'" prop="select">
             <el-cascader
               placeholder="请选择"
               v-model="form.select"
@@ -23,8 +23,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="'名称'" prop="seriesName">
-            <el-input v-model="form.seriesName"></el-input>
+          <el-form-item :label="'颜色'" prop="color">
+            <el-input v-model="form.color"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -47,19 +47,19 @@ export default {
   data() {
     return {
       form: {
-        level: '1',
-        seriesName: null,
+        type: 2,
+        color: null,
         parentId: 0,
         select: []
       },
       goodsList: [{
         id: 0,
-        seriesName: '系列',
+        seriesName: '产品',
         children: []
       }
       ],
       rules: {
-        seriesName: [
+        color: [
           {required: true, message: '请输入', trigger: 'blur'}
         ],
         select: [

@@ -35,7 +35,7 @@ export default {
       type: null,
 
       columns: [
-        { text: '商品', name: 'seriesName' },
+        { text: '商品', name: 'productName' },
       ]
     }
   },

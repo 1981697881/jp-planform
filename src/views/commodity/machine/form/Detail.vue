@@ -3,28 +3,18 @@
     <el-form :model="form" :rules="rules" ref="form" label-width="100px" :size="'mini'">
       <el-row :gutter="20">
         <el-col :span="12">
-          <!--<el-form-item :label="'所属上级'" prop="parentId">
-            <el-select v-model="form.parentId" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in goodsList"
-                :key="index"
-                :label="item.seriesName"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>-->
-          <el-form-item :label="'所属上级'" prop="select">
+          <el-form-item :label="'系列'" prop="select">
             <el-cascader
               placeholder="请选择"
               v-model="form.select"
               :options="goodsList"
-              :props="{ checkStrictly: true,value:'id',label:'seriesName' }"
+              :props="{ value:'id',label:'seriesName' }"
               clearable></el-cascader>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="'名称'" prop="seriesName">
-            <el-input v-model="form.seriesName"></el-input>
+          <el-form-item :label="'品名'" prop="productName">
+            <el-input v-model="form.productName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -48,18 +38,14 @@ export default {
     return {
       form: {
         level: '1',
-        seriesName: null,
+        productName: null,
         parentId: 0,
         select: []
       },
-      goodsList: [{
-        id: 0,
-        seriesName: '系列',
-        children: []
-      }
+      goodsList: [
       ],
       rules: {
-        seriesName: [
+        productName: [
           {required: true, message: '请输入', trigger: 'blur'}
         ],
         select: [
@@ -81,9 +67,9 @@ export default {
   },
   methods: {
     formatList() {
-      specificationForm({id: null}).then(res => {
+      specificationForm({id: 1}).then(res => {
         if (res.flag) {
-          this.goodsList[0].children = res.data
+          this.goodsList = res.data
         }
       })
     },

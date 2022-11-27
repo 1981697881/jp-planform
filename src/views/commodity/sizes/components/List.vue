@@ -35,7 +35,10 @@ export default {
       type: null,
 
       columns: [
-        { text: '商品', name: 'seriesName' },
+        { text: '中码', name: 'cn' },
+        { text: '欧码', name: 'eur' },
+        { text: '美码（男）', name: 'usn' },
+        { text: '美码（女）', name: 'usw' },
       ]
     }
   },

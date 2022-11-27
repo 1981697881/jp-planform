@@ -3,28 +3,13 @@
     <el-form :model="form" :rules="rules" ref="form" label-width="100px" :size="'mini'">
       <el-row :gutter="20">
         <el-col :span="12">
-          <!--<el-form-item :label="'所属上级'" prop="parentId">
-            <el-select v-model="form.parentId" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in goodsList"
-                :key="index"
-                :label="item.seriesName"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>-->
-          <el-form-item :label="'所属上级'" prop="select">
-            <el-cascader
-              placeholder="请选择"
-              v-model="form.select"
-              :options="goodsList"
-              :props="{ checkStrictly: true,value:'id',label:'seriesName' }"
-              clearable></el-cascader>
+          <el-form-item :label="'系列名称'" prop="seriesName">
+            <el-input v-model="form.seriesName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="'名称'" prop="seriesName">
-            <el-input v-model="form.seriesName"></el-input>
+          <el-form-item :label="'保修期至'" prop="warrantyTime">
+            <el-input v-model="form.warrantyTime"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -35,7 +20,7 @@
   </div>
 </template>
 
-<script>import {addCommodity, specificationForm} from '@/api/commodity/index'
+<script>import {addCommodity} from '@/api/commodity/index'
 
 export default {
   props: {
@@ -49,50 +34,26 @@ export default {
       form: {
         level: '1',
         seriesName: null,
-        parentId: 0,
-        select: []
+        warrantyTime: null,
+        parentId: 0
       },
-      goodsList: [{
-        id: 0,
-        seriesName: '系列',
-        children: []
-      }
-      ],
       rules: {
         seriesName: [
           {required: true, message: '请输入', trigger: 'blur'}
-        ],
-        select: [
-          {required: true, message: '请选择', trigger: 'change'}
         ],
       }
     }
   },
   mounted() {
-    this.formatList()
     if (this.listInfo) {
       this.form = this.listInfo
-      console.log(this.form)
-      this.form.select = this.listInfo.parentIdList.split(',')
-      this.form.select = this.form.select.map(item => {
-        return +item
-      })
     }
   },
   methods: {
-    formatList() {
-      specificationForm({id: null}).then(res => {
-        if (res.flag) {
-          this.goodsList[0].children = res.data
-        }
-      })
-    },
     saveData(form) {
       this.$refs[form].validate((valid) => {
         // 判断必填项
         if (valid) {
-          this.form.parentId = this.form.select[this.form.select.length-1]
-          this.form.parentIdList = this.form.select.join(',')
           addCommodity(this.form).then(res => {
             this.$emit('hideDialog', false)
             this.$emit('uploadList')

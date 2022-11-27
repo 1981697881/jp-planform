@@ -3,17 +3,7 @@
     <el-form :model="form" :rules="rules" ref="form" label-width="100px" :size="'mini'">
       <el-row :gutter="20">
         <el-col :span="12">
-          <!--<el-form-item :label="'所属上级'" prop="parentId">
-            <el-select v-model="form.parentId" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in goodsList"
-                :key="index"
-                :label="item.seriesName"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>-->
-          <el-form-item :label="'所属上级'" prop="select">
+          <el-form-item :label="'商品'" prop="select">
             <el-cascader
               placeholder="请选择"
               v-model="form.select"
@@ -23,8 +13,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="'名称'" prop="seriesName">
-            <el-input v-model="form.seriesName"></el-input>
+          <el-form-item :label="'款号'" prop="itemNo">
+            <el-input v-model="form.itemNo"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -48,18 +38,14 @@ export default {
     return {
       form: {
         level: '1',
-        seriesName: null,
+        itemNo: null,
         parentId: 0,
         select: []
       },
-      goodsList: [{
-        id: 0,
-        seriesName: '系列',
-        children: []
-      }
+      goodsList: [
       ],
       rules: {
-        seriesName: [
+        itemNo: [
           {required: true, message: '请输入', trigger: 'blur'}
         ],
         select: [
@@ -83,7 +69,7 @@ export default {
     formatList() {
       specificationForm({id: null}).then(res => {
         if (res.flag) {
-          this.goodsList[0].children = res.data
+          this.goodsList= res.data
         }
       })
     },

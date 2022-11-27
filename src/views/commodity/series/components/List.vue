@@ -35,7 +35,8 @@ export default {
       type: null,
 
       columns: [
-        { text: '商品', name: 'seriesName' },
+        { text: '系列名称', name: 'seriesName' },
+        { text: '保修期至', name: 'warrantyTime' },
       ]
     }
   },

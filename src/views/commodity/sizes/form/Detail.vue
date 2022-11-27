@@ -1,19 +1,9 @@
 <template>
   <div>
-    <el-form :model="form" :rules="rules" ref="form" label-width="100px" :size="'mini'">
+    <el-form :model="form" :rules="rules" ref="form" label-width="110px" :size="'mini'">
       <el-row :gutter="20">
         <el-col :span="12">
-          <!--<el-form-item :label="'所属上级'" prop="parentId">
-            <el-select v-model="form.parentId" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in goodsList"
-                :key="index"
-                :label="item.seriesName"
-                :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>-->
-          <el-form-item :label="'所属上级'" prop="select">
+          <el-form-item :label="'产品'" prop="select">
             <el-cascader
               placeholder="请选择"
               v-model="form.select"
@@ -23,9 +13,28 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="'名称'" prop="seriesName">
-            <el-input v-model="form.seriesName"></el-input>
+          <el-form-item :label="'中码'" prop="cn">
+            <el-input v-model="form.cn"></el-input>
           </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item :label="'欧码'" prop="eur">
+            <el-input v-model="form.eur"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item :label="'美码（男）'" prop="usm">
+            <el-input v-model="form.usm"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item :label="'美码（女）'" prop="usw">
+          <el-input v-model="form.usw"></el-input>
+        </el-form-item>
         </el-col>
       </el-row>
     </el-form>
@@ -47,19 +56,27 @@ export default {
   data() {
     return {
       form: {
-        level: '1',
-        seriesName: null,
-        parentId: 0,
+        type: 1,
+        cn: null,
+        eur: null,
+        usm: null,
+        usw: null,
         select: []
       },
       goodsList: [{
         id: 0,
-        seriesName: '系列',
+        seriesName: '产品',
         children: []
       }
       ],
       rules: {
-        seriesName: [
+        cn: [
+          {required: true, message: '请输入', trigger: 'blur'}
+        ],eur: [
+          {required: true, message: '请输入', trigger: 'blur'}
+        ],usm: [
+          {required: true, message: '请输入', trigger: 'blur'}
+        ],usw: [
           {required: true, message: '请输入', trigger: 'blur'}
         ],
         select: [
