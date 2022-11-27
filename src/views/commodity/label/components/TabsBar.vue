@@ -161,6 +161,7 @@ export default {
     export() {
       if (this.selections.length > 0) {
         let number = 0
+        console.log(this.selections)
         this.selections.forEach((item, index) => {
           if (!item.labelVOS) {
             number++;

@@ -18,6 +18,9 @@
       v-loading="loading"
       row-key="id"
       :tree-props="tree"
+      @select-all="selectAll"
+      @select="selectChange"
+      ref="multipleTable"
     >
       <el-table-column align="center" fixed v-if="type" :type="type?'selection':''"></el-table-column>
       <el-table-column v-if="index" prop="date" label="序号" type="index" align="center" sortable></el-table-column>
@@ -160,6 +163,7 @@
   },
   data() {
     return {
+      checkedKeys: false,
       methods: this.$options.methods,
       fileUrl: this.$store.state.user.url + '/uploadFiles/image/',
     };
@@ -265,9 +269,85 @@
         return {'background-color': '#FFDAB9'}
       }
     },
+    /**
+     * 用于树形表格多选，单选的封装
+     * @param selection
+     * @param row
+     */
+    selectChange(selection, row) {
+      // 如果selection中存在row代表是选中，否则是取消选中
+      if (selection.find(val => { return this.getDataId(val) === this.getDataId(row) })) {
+        if (row.labelVOS) {// 注意这里的children是后台返回数据的children字段
+          row.labelVOS.forEach(val => {
+            this.$refs.multipleTable.toggleRowSelection(val, true)
+            selection.push(val)
+            if (val.labelVOS) {
+              this.selectChange(selection, val)
+            }
+          })
+        }
+      } else {
+        this.toggleRowSelection(selection, row)
+      }
+    },
+    selectAll(selection) {
+      // 如果选中的数目与请求到的数目相同就选中子节点，否则就清空选中
+      if (selection && selection.length === this.list.length) {
+        selection.forEach(val => {
+          this.selectChange(selection, val)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+     /* this.checkedKeys = !this.checkedKeys;
+      this.splite(this.list.records, this.checkedKeys);*/
+    },
+    /**
+     * 处理数据
+     */
+    splite(data, flag) {
+      data.forEach((row) => {
+        this.$refs.multipleTable.toggleRowSelection(row, flag);
+        if (row.labelVOS != undefined) {
+          this.splite(row.labelVOS);
+        }
+      });
+    },
     // 监听多选 参数-所有选中的值
     handleSelectionChange(val) {
+      this.selections = val
+      this.unique(this.selections,'id')//这里有一个问题就是这样点选完之后，数据有重复，所以根据id手动去重，期待优化
       this.$store.dispatch('list/setSelections', val)
+    },
+    /**
+     * 切换选中状态
+     * @param selection
+     * @param data
+     */
+    toggleRowSelection(selection, data) {
+      if (data.labelVOS) {// 注意这里的children也是后台返回数据的children字段
+        data.labelVOS.forEach(val => {
+          this.$refs.multipleTable.toggleRowSelection(val, false)
+          if (val.labelVOS) {
+            this.toggleRowSelection(selection, val)
+          }
+        })
+      }
+    },
+    getDataId(data) {
+      return data['id']
+    },
+
+    // 数组去重
+    unique(arr,i){
+      for(let i=0;i<arr.length;i++){
+        for(let j=i+1;j<arr.length;j++){
+          if(arr[i].id == arr[j].id){
+            arr.splice(j,1)
+            j--
+          }
+        }
+      }
     },
     getSummaries({columns, data}) {
       const sums = [];
@@ -295,6 +375,7 @@
     },
     // 表格单击操作
     rowClick(row, column, el) {
+      this.$refs.multipleTable.toggleRowSelection(row);
       return this.$emit('row-click', {row, column, el});
     },
     // 表格双击操作

@@ -35,7 +35,7 @@ export default {
       type: null,
 
       columns: [
-        { text: '框号', name: 'itemNo' },
+        { text: '款号', name: 'seriesName' },
       ]
     }
   },

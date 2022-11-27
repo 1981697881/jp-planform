@@ -13,8 +13,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="'品名'" prop="productName">
-            <el-input v-model="form.productName"></el-input>
+          <el-form-item :label="'品名'" prop="seriesName">
+            <el-input v-model="form.seriesName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -38,14 +38,14 @@ export default {
     return {
       form: {
         level: '1',
-        productName: null,
+        seriesName: null,
         parentId: 0,
         select: []
       },
       goodsList: [
       ],
       rules: {
-        productName: [
+        seriesName: [
           {required: true, message: '请输入', trigger: 'blur'}
         ],
         select: [

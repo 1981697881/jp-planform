@@ -142,7 +142,8 @@ export default {
     // 查询条件过滤
     qFilter() {
       let obj = {}
-      this.search.cinemaName != null && this.search.cinemaName != '' ? obj.cinemaName = this.search.cinemaName : null
+      this.search.name != null && this.search.name != '' ? obj.productName = this.search.name : null
+      this.search.parentId != null && this.search.parentId != '' ? obj.parentId = this.search.parentId : null
       return obj
     },
     onFun(method, event) {
@@ -152,6 +153,7 @@ export default {
       this.$emit('showDialog')
     },
     upload() {
+      this.search.name = ''
       this.$emit('uploadList')
     },
     printer() {

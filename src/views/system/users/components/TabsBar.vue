@@ -107,6 +107,7 @@ export default {
       }
     },
     upload() {
+      this.search.name = ''
       this.$emit('uploadAll')
     },
     disable() {

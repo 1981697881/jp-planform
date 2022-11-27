@@ -34,25 +34,6 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="'尺码'" prop="cnSize">
-            <el-select style="width: 100%" v-model="form.cnSize" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item :label="'三包期限'" prop="deadline">
-            <el-input v-model="form.deadline"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
           <el-form-item :label="'产品'" prop="select">
             <el-cascader
               style="width: 100%"
@@ -70,34 +51,41 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item :label="'标签数量'" >
-            <el-input-number v-model="form.createCount" :min="1"></el-input-number>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24" style="text-align: center">
-          <el-form-item :label="'图片'">
-            <el-upload
-              :action="fileUrl"
-              list-type="picture-card"
-              accept="image/jpeg,image/jpg,image/png,image/gif"
-              :headers="headers"
-              :limit="1"
-              name="imgS"
-              :on-success="uploadSuccess"
-              :on-error="uploadError"
-              :class="{hide:hideUpload}"
-              :on-preview="handlePictureCardPreview"
-              :on-change="handleChange"
-              :file-list="fileList"
-              :on-remove="handleRemove">
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible" append-to-body size="tiny">
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
+        <el-col :span="24">
+          <el-form-item :label="'规格'" >
+            <el-table class="list-main" height="200px" :data="list" border size="mini" :highlight-current-row="true">
+              <el-table-column prop="date" label="序号" type="index" align="center" sortable></el-table-column>
+              <el-table-column prop="integral" label="尺码" align="size" />
+              <el-table-column prop="integral" label="颜色" align="color" />
+              <el-table-column prop="volume" label="数量" align="center">
+                <template slot-scope="scope">
+                  <el-input type="text" v-model="scope.row.createCount"/>
+                </template>
+              </el-table-column>
+              <el-table-column prop="imageArr" label="图片" align="center">
+                <template slot-scope="scope">
+                  <el-upload
+                    :action="fileUrl"
+                    list-type="picture-card"
+                    accept="image/jpeg,image/jpg,image/png,image/gif"
+                    :headers="headers"
+                    :limit="1"
+                    name="imgS"
+                    :on-success="uploadSuccess"
+                    :on-error="uploadError"
+                    :class="{hide:hideUpload}"
+                    :on-preview="handlePictureCardPreview"
+                    :on-change="handleChange"
+                    :file-list="fileList"
+                    :on-remove="handleRemove">
+                    <i class="el-icon-plus"></i>
+                  </el-upload>
+                  <el-dialog :visible.sync="dialogVisible" append-to-body size="tiny">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                  </el-dialog>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-form-item>
         </el-col>
       </el-row>
@@ -129,6 +117,13 @@ export default {
       headers: {
         'authorization': getToken('jprx'),
       },
+      columns: [
+        { text: '尺码', name: 'size' },
+        { text: '颜色', name: 'color' },
+        { text: '数量', name: 'createCount' },
+        { text: '图片', name: 'productPhoto' }
+      ],
+      list: [{}],
       options: [{
         value: '215',
         label: '215'

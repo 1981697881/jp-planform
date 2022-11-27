@@ -10,7 +10,7 @@
 
     <el-dialog
       :visible.sync="visible"
-      title="基本信息"
+      title="标签信息"
       v-if="visible"
       v-dialogDrag
       :width="'50%'"
