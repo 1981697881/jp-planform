@@ -133,3 +133,41 @@ export function deleteSizeColor(params) {
     data: params
   })
 }
+// 产品上传-获取列表
+export function getTemporaryLabelList(params, data) {
+  const url = '/temporaryLabel/temporaryLabelList/' + params.pageNum + '/' + params.pageSize
+  return request({
+    url: url,
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    data: data
+  })
+}
+// 产品上传-刪除
+export function deleteTemporaryLabel(params) {
+  const url = '/temporaryLabel/deleteTemporaryLabel'
+  return request({
+    url: url,
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    data: params
+  })
+}// 标签信息-刪除
+export function deleteLabel(params) {
+  const url = '/label/deleteLabel'
+  return request({
+    url: url,
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'post',
+    data: params
+  })
+}

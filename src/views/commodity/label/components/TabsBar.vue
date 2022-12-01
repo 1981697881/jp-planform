@@ -187,15 +187,19 @@ export default {
       }
     },
     Delivery() {
-      if (this.clickData.id) {
-        this.$confirm('是否删除（' + this.clickData.labelId + '），删除后将无法恢复?', '提示', {
+      if (this.selections.length > 0) {
+        this.$confirm('是否删除，删除后将无法恢复?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$emit('delList', {
-            id: this.clickData.id
+          let array = []
+          this.selections.forEach((item, index) => {
+            if (!item.labelVOS) {
+              array.push({'labelId': item.labelId})
+            }
           })
+          this.$emit('delList', array)
         }).catch(() => {
           this.$message({
             type: 'info',

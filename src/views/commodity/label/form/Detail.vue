@@ -50,7 +50,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
+      <!--<el-row :gutter="20">
         <el-col :span="24">
           <el-form-item :label="'规格'" >
             <el-table class="list-main" height="200px" :data="list" border size="mini" :highlight-current-row="true">
@@ -88,7 +88,7 @@
             </el-table>
           </el-form-item>
         </el-col>
-      </el-row>
+      </el-row>-->
     </el-form>
     <div slot="footer" style="text-align:center">
       <el-button type="primary" @click="saveData('form')">保存</el-button>
@@ -228,10 +228,9 @@ export default {
           this.form.telephone = item.telephone
         }
       })
-      console.log(val)
     },
     formatGoodList() {
-      specificationForm({id: 0}).then(res => {
+      specificationForm({id: 3}).then(res => {
         if (res.flag) {
           this.goodsList = res.data
         }

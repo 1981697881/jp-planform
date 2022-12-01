@@ -58,11 +58,11 @@
           show-overflow-tooltip
           align="center"
         >
-          <template width="90" v-if="scope.row.picUrl != null" slot-scope="scope">
+          <template width="90" v-if="scope.row.productPhoto != null" slot-scope="scope">
             <el-image
               style="width: 80px; height: 80px"
-              :src="scope.row.picUrl"
-              :preview-src-list="[scope.row.picUrl]">
+              :src="fileUrl+scope.row.productPhoto"
+              :preview-src-list="[fileUrl+scope.row.productPhoto]">
             </el-image>
             <!--<img style="width:80px;height:80px;border:none;" :src="scope.row.picUrl">-->
           </template>
@@ -165,7 +165,7 @@
     return {
       checkedKeys: false,
       methods: this.$options.methods,
-      fileUrl: this.$store.state.user.url + '/uploadFiles/image/',
+      fileUrl: this.$store.state.user.url + '/image/',
     };
   },
   methods: {

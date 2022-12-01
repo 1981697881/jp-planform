@@ -70,7 +70,7 @@ export default {
     }
   },
   mounted() {
-    this.formatList()
+   /* this.formatList()*/
     if (this.listInfo) {
       this.form = this.listInfo
      /* this.form.select = this.listInfo.parentIdList.split(',')

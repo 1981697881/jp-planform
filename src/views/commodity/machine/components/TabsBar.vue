@@ -31,7 +31,8 @@
           <el-button style="margin-left: 10px;display: none" size="mini" type="success" @click="submitUpload">上传到服务器
           </el-button>
         </el-upload>
-        <el-button :size="'mini'" type="primary" icon="el-icon-download" @click="exportData">导出</el-button>-->
+        <el-button :size="'mini'" type="primary" icon="el-icon-download" @click="exportData">导出</el-button>
+        <el-button :size="'mini'" type="primary" icon="el-icon-download" @click="handlerLabel">生成标签</el-button>-->
         <el-button :size="'mini'" type="primary" icon="el-icon-refresh" @click="upload">刷新</el-button>
       </el-button-group>
     </el-form>
@@ -57,7 +58,6 @@ export default {
       fileUrl: '',
       search: {
         name: '',
-        parentId: 2
       }
     }
   },
@@ -143,7 +143,6 @@ export default {
     qFilter() {
       let obj = {}
       this.search.name != null && this.search.name != '' ? obj.productName = this.search.name : null
-      this.search.parentId != null && this.search.parentId != '' ? obj.parentId = this.search.parentId : null
       return obj
     },
     onFun(method, event) {
@@ -151,6 +150,9 @@ export default {
     },
     handlerAdd() {
       this.$emit('showDialog')
+    },
+    handlerUploadAdd() {
+      this.$emit('showUploadDialog')
     },
     upload() {
       this.search.name = ''
@@ -199,6 +201,16 @@ export default {
     handlerAlter() {
       if (this.clickData.id) {
         this.$emit('showDialog', this.clickData)
+      } else {
+        this.$message({
+          message: '无选中行',
+          type: 'warning'
+        })
+      }
+    },
+    handlerLabel() {
+      if (this.selections.length>0) {
+        this.$emit('showLabelDialog', this.selections)
       } else {
         this.$message({
           message: '无选中行',

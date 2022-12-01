@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getGoodsList, deleteCommodity } from '@/api/commodity/index'
+import { getTemporaryLabelList, deleteTemporaryLabel } from '@/api/commodity/index'
 import List from '@/components/List'
 
 export default {
@@ -33,9 +33,22 @@ export default {
       list: {},
       fid: null,
       type: null,
-
       columns: [
-        { text: '商品', name: 'seriesName' },
+        { text: '系列', name: 'seriesName' },
+        { text: '品名', name: 'productName' },
+        { text: '款号', name: 'itemNo' },
+        { text: '尺码CN', name: 'cn' },
+        { text: '尺码EUR', name: 'eur' },
+        { text: '尺码US(M\'S)', name: 'usm' },
+        { text: '尺码US(W\'S)', name: 'usw' },
+        { text: '颜色', name: 'color' },
+        { text: '制令号', name: 'batchNo' },
+        { text: '三包期', name: 'warrantyTime' },
+        { text: '楦型', name: 'lastShape' },
+        { text: '公司', name: 'telephone' },
+        { text: '电话', name: 'seriesName' },
+        { text: '网址', name: 'officialWebsite' },
+        { text: '图片', name: 'productPhoto', default: 'image'}
       ]
     }
   },
@@ -75,7 +88,7 @@ export default {
       this.$emit('uploadList')
     },
     Delivery(val) {
-      deleteCommodity(val).then(res => {
+      deleteTemporaryLabel(val).then(res => {
         if(res.flag) {
           this.$store.dispatch('list/setClickData', '');
           this.$emit('uploadList')
@@ -100,7 +113,7 @@ export default {
       pageSize: this.list.size || 50
     }) {
       this.loading = true
-      getGoodsList(data, val).then(res => {
+      getTemporaryLabelList(data, val).then(res => {
         this.loading = false
         this.list = res.data
       })

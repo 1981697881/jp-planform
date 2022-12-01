@@ -16,7 +16,7 @@
 </template>
 
 <script>import { mapGetters } from 'vuex'
-import { getLabelList} from '@/api/commodity/index'
+import { getLabelList, deleteLabel} from '@/api/commodity/index'
 import List from '@/components/List'
 
 export default {
@@ -34,11 +34,11 @@ export default {
         { text: '创建时间', name: 'createDate' },
         { text: '生成数量', name: 'createCount' },
         { text: '公司', name: 'companyName' },
-        { text: '产品名称', name: 'productName' },
-        { text: '系列名称', name: 'seriesName' },
-        { text: '款式名称', name: 'itemNo' },
+        { text: '系列', name: 'seriesName' },
+        { text: '品名', name: 'productName' },
+        { text: '款号', name: 'itemNo' },
         { text: '唯一码', name: 'labelId' },
-        { text: '批号', name: 'batchNo' },
+        { text: '制令号', name: 'batchNo' },
       ]
     }
   },
@@ -57,7 +57,7 @@ export default {
       this.$emit('showDialog', obj.row)
     },
     Delivery(val) {
-      deleteCompany(val).then(res => {
+      deleteLabel(val).then(res => {
         if (res.flag) {
           this.$store.dispatch('list/setClickData', '')
           this.$emit('uploadList')
