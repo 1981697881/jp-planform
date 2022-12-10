@@ -8,10 +8,10 @@
     </div>
     <el-dialog
       :visible.sync="visible"
-      title="尺码信息"
+      title="标签导出"
       v-if="visible"
       v-dialogDrag
-      :width="'40%'"
+      :width="'70%'"
       destroy-on-close
     >
       <info @hideDialog="hideWindow" @uploadList="upload" :listInfo="listInfo"></info>

@@ -6,7 +6,6 @@
       :loading="loading"
       :list="list"
       index
-      type
       @handle-size="handleSize"
       @handle-current="handleCurrent"
       @row-click="rowClick"
@@ -16,7 +15,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getSizeColorList, deleteSizeColor } from '@/api/commodity/index'
+import { getTemporaryLabelList, deleteTemporaryLabel } from '@/api/commodity/index'
 import List from '@/components/List'
 
 export default {
@@ -33,9 +32,9 @@ export default {
       list: {},
       fid: null,
       type: null,
-
       columns: [
-        { text: '颜色', name: 'color' },
+        { text: '文件名称', name: 'excelName' },
+        { text: '导入人', name: '' }
       ]
     }
   },
@@ -80,7 +79,7 @@ export default {
       this.$emit('uploadList')
     },
     Delivery(val) {
-      deleteSizeColor(val).then(res => {
+      deleteTemporaryLabel(val).then(res => {
         if(res.flag) {
           this.$store.dispatch('list/setClickData', '');
           this.$emit('uploadList')
@@ -105,7 +104,7 @@ export default {
       pageSize: this.list.size || 50
     }) {
       this.loading = true
-      getSizeColorList(data, val).then(res => {
+      getTemporaryLabelList(data, val).then(res => {
         this.loading = false
         this.list = res.data
       })

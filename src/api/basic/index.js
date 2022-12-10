@@ -124,6 +124,78 @@ export function deleteImg(params) {
     data: params
   })
 }
+// 尺码对照-获取列表
+export function getContrastSizeList(params, query) {
+  const url = '/contrastSizeDetail/contrastSizeList/' + params.pageNum + '/' + params.pageSize
+  return request({
+    url: url,
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    data: query
+  })
+}
 
+// 尺码对照-新增
+export function addContrastSize(params) {
+  return request({
+    url: '/contrastSizeDetail/addContrastSize',
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    data: params
+  })
+}
+// 尺码对照-删除
+export function deleteContrastSize(params) {
+  return request({
+    url: '/contrastSizeDetail/deleteContrastSize',
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    data: params
+  })
+}
 
-
+// 订单管理-上传文件明细
+export function temporaryLabels(params) {
+  return request({
+    url: '/temporaryLabel/temporaryLabels',
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    data: params
+  })
+}
+// 订单管理-确认
+export function temporaryLabelsConfirm(params) {
+  return request({
+    url: '/temporaryLabel/confirm',
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    data: params
+  })
+}
+// 订单管理-保存导入数据
+export function inputTemporaryLabel(params) {
+  return request({
+    url: '/temporaryLabel/inputTemporaryLabel',
+    headers: {
+      'authorization': getToken('jprx'),
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    data: params
+  })
+}

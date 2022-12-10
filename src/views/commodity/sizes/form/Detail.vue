@@ -3,25 +3,34 @@
     <el-form :model="form" :rules="rules" ref="form" label-width="110px" :size="'mini'">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item :label="'中码'" prop="cn">
+          <el-form-item :label="'对照号'" prop="cn">
             <el-input v-model="form.cn"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="'欧码'" prop="eur">
+          <el-form-item :label="'备注'" prop="eur">
             <el-input v-model="form.eur"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item :label="'美码（男）'" prop="usm">
-            <el-input v-model="form.usm"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item :label="'美码（女）'" prop="usw">
-            <el-input v-model="form.usw"></el-input>
+        <el-col :span="24">
+          <el-form-item :label="'规格'" >
+            <el-table class="list-main" height="200px" :data="list" border size="mini" :highlight-current-row="true">
+              <el-table-column prop="date" label="序号" type="index" align="center" sortable></el-table-column>
+              <el-table-column prop="cnSize" label="尺码CN" align="center" ><template slot-scope="scope">
+                <el-input type="text" v-model="scope.row.cnSize"/>
+              </template></el-table-column>
+              <el-table-column prop="eurSize" label="尺码EUR" align="center" ><template slot-scope="scope">
+                <el-input type="text" v-model="scope.row.eurSize"/>
+              </template></el-table-column>
+              <el-table-column prop="usmSize" label="尺码US(M'S)" align="center" ><template slot-scope="scope">
+                <el-input type="text" v-model="scope.row.usmSize"/>
+              </template></el-table-column>
+              <el-table-column prop="uswSize" label="尺码US(W'S)" align="center" ><template slot-scope="scope">
+                <el-input type="text" v-model="scope.row.uswSize"/>
+              </template></el-table-column>
+            </el-table>
           </el-form-item>
         </el-col>
       </el-row>
@@ -51,6 +60,44 @@ export default {
         usw: null,
         select: []
       },
+      columns: [
+        { text: '尺码CN', name: 'cnSize' },
+        { text: '尺码EUR', name: 'eurSize' },
+        { text: '尺码US(M\'S)', name: 'usmSize' },
+        { text: '尺码US(W\'S)', name: 'uswSize' },
+      ],
+      list: [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+      ],
       goodsList: [
       ],
       rules: {

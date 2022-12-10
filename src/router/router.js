@@ -8,8 +8,11 @@ const map = {
   '/basic': () => import('@/layout'),
   'clerk': () => import('@/views/basic/clerk'),
   'company': () => import('@/views/basic/company'),
+  'contrast': () => import('@/views/basic/contrast'),
 
   'machine': () => import('@/views/commodity/machine'),
+  'labelPrinting': () => import('@/views/commodity/labelPrinting'),
+  'commodity': () => import('@/views/commodity/commodity'),
   'ItemNo': () => import('@/views/commodity/ItemNo'),
   'series': () => import('@/views/commodity/series'),
   'label': () => import('@/views/commodity/label'),

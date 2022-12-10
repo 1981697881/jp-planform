@@ -37,10 +37,10 @@ export default {
         { text: '系列', name: 'seriesName' },
         { text: '品名', name: 'productName' },
         { text: '款号', name: 'itemNo' },
-        { text: '尺码CN', name: 'cn' },
-        { text: '尺码EUR', name: 'eur' },
-        { text: '尺码US(M\'S)', name: 'usm' },
-        { text: '尺码US(W\'S)', name: 'usw' },
+        { text: '尺码CN', name: 'cnSize' },
+        { text: '尺码EUR', name: 'eurSize' },
+        { text: '尺码US(M\'S)', name: 'usmSize' },
+        { text: '尺码US(W\'S)', name: 'uswSize' },
         { text: '颜色', name: 'color' },
         { text: '制令号', name: 'batchNo' },
         { text: '三包期', name: 'warrantyTime' },
@@ -67,7 +67,12 @@ export default {
         const list = this.list.records
         const data = this.formatJson(filterVal, list);
         // 这里还是使用export_json_to_excel方法比较好，方便操作数据
-        excel.export_json_to_excel(tHeader,data,'产品信息')
+        excel.exportJsonToExcel({
+          header: tHeader,
+          data: data,
+          filename: '报表',
+          autoWidth: true,
+          bookType: 'xlsx'})
       })
     },
     formatJson(filter, jsonDate){

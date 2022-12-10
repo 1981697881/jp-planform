@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { getSizeColorList, deleteSizeColor } from '@/api/commodity/index'
+import { getContrastSizeList, deleteContrastSize } from '@/api/basic/index'
 import List from '@/components/List'
 
 export default {
@@ -33,42 +33,13 @@ export default {
       list: {},
       fid: null,
       type: null,
-
       columns: [
-        { text: '颜色', name: 'color' },
+        { text: '对照号', name: 'contrastId' },
+        { text: '备注', name: 'remark' }
       ]
     }
   },
   methods: {
-    ExportData() {
-      import('@/vendor/Export2Excel').then(excel => {
-        // 表格的表头列表
-        const columns = this.columns
-        const tHeader = []
-        // 与表头相对应的数据里边的字段
-        const filterVal = []
-        columns.forEach((item, index) => {
-          tHeader.push(item.text)
-          filterVal.push(item.name)
-        })
-        const list = this.list.records
-        const data = this.formatJson(filterVal, list);
-        // 这里还是使用export_json_to_excel方法比较好，方便操作数据
-        excel.exportJsonToExcel({
-          header: tHeader,
-          data: data,
-          filename: '报表',
-          autoWidth: true,
-          bookType: 'xlsx'})
-      })
-    },
-    formatJson(filter, jsonDate){
-      return jsonDate.map(v =>
-        filter.map(j => {
-          return v[j]
-        })
-      )
-    },
     // 监听每页显示几条
     handleSize(val) {
       this.list.size = val
@@ -80,7 +51,7 @@ export default {
       this.$emit('uploadList')
     },
     Delivery(val) {
-      deleteSizeColor(val).then(res => {
+      deleteContrastSize(val).then(res => {
         if(res.flag) {
           this.$store.dispatch('list/setClickData', '');
           this.$emit('uploadList')
@@ -105,7 +76,7 @@ export default {
       pageSize: this.list.size || 50
     }) {
       this.loading = true
-      getSizeColorList(data, val).then(res => {
+      getContrastSizeList(data, val).then(res => {
         this.loading = false
         this.list = res.data
       })

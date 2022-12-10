@@ -14,16 +14,11 @@
               <el-table-column prop="seriesName" label="系列" align="center" />
               <el-table-column prop="productName" label="品名" align="center" />
               <el-table-column prop="itemNo" label="款号" align="center" />
-              <el-table-column prop="cn" label="尺码CN" align="center" />
-              <el-table-column prop="eur" label="尺码EUR" align="center" />
-              <el-table-column prop="usm" label="尺码US(M'S)" align="center" />
-              <el-table-column prop="usw" label="尺码US(W'S)" align="center" />
+              <el-table-column prop="cnSize" label="尺码CN" align="center" />
+              <el-table-column prop="eurSize" label="尺码EUR" align="center" />
+              <el-table-column prop="usmSize" label="尺码US(M'S)" align="center" />
+              <el-table-column prop="uswSize" label="尺码US(W'S)" align="center" />
               <el-table-column prop="color" label="颜色" align="center" />
-              <el-table-column prop="volume" label="数量" align="center">
-                <template slot-scope="scope">
-                  <el-input type="text" v-model="scope.row.createCount"/>
-                </template>
-              </el-table-column>
             </el-table>
           </el-form-item>
         </el-col>
@@ -50,11 +45,11 @@ export default {
         { text: '系列', name: 'seriesName' },
         { text: '品名', name: 'productName' },
         { text: '款号', name: 'itemNo' },
-        { text: '尺码CN', name: 'cn' },
-        { text: '尺码EUR', name: 'eur' },
-        { text: '尺码US(M\'S)', name: 'usm' },
-        { text: '尺码US(W\'S)', name: 'usw' },
-        { text: '颜色', name: 'color' },
+        { text: '尺码CN', name: 'cnSize' },
+        { text: '尺码EUR', name: 'eurSize' },
+        { text: '尺码US(M\'S)', name: 'usmSize' },
+        { text: '尺码US(W\'S)', name: 'uswSize' },
+        { text: '颜色', name: 'color' }
       ],
       list: [],
       form: {

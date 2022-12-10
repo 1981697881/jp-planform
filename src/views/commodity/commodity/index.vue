@@ -2,13 +2,13 @@
   <div class="app-list">
     <div class="list-containerOther">
       <div>
-        <tabs-bar ref="tabs" @showDialog="handlerDialog" @exportData="exportData" @del="delivery" @queryBtn="query" @uploadList="upload"/>
+        <tabs-bar ref="tabs" @showDialog="handlerDialog" @showUploadDialog="handlerUploadDialog" @exportData="exportData" @del="delivery" @queryBtn="query" @uploadList="upload"/>
       </div>
       <list ref="list" @uploadList="uploadPage" @showDialog="handlerDialog"/>
     </div>
     <el-dialog
       :visible.sync="visible"
-      title="尺码信息"
+      title="商品上传"
       v-if="visible"
       v-dialogDrag
       :width="'40%'"
@@ -16,21 +16,33 @@
     >
       <info @hideDialog="hideWindow" @uploadList="upload" :listInfo="listInfo"></info>
     </el-dialog>
+    <el-dialog
+      :visible.sync="visible2"
+      title="订单确认"
+      v-if="visible2"
+      v-dialogDrag
+      :width="'70%'"
+      destroy-on-close
+    >
+      <upload-info @hideDialog="hideWindow" @uploadList="upload" :listInfo="listInfo"></upload-info>
+    </el-dialog>
   </div>
 </template>
 
 <script>import { TabsBar, List } from './components'
-import { Info } from './form'
+import { Info, UploadInfo } from './form'
 
 export default {
   components: {
     TabsBar,
     List,
+    UploadInfo,
     Info
   },
   data() {
     return {
       visible: null,
+      visible2: null,
       rid: null,
       listInfo: null,
       floorId: null
@@ -50,6 +62,15 @@ export default {
     },
     hideWindow(val) {
       this.visible = val
+      this.visible2 = val
+    },
+    handlerUploadDialog(obj) {
+      this.listInfo = null
+      if (obj) {
+        const info = JSON.parse(JSON.stringify(obj))
+        this.listInfo = info
+      }
+      this.visible2 = true
     },
     handlerDialog(obj) {
       this.listInfo = null
