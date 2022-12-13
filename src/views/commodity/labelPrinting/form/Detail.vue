@@ -1,68 +1,72 @@
 <template>
   <div>
-    <div class="printClass" v-for="(label,labeIndex) in labelList" :key="labeIndex" :ref="label">
-      <div style="width: 60mm;height: auto" v-for="(item,index) in label" :key="index">
-        <div  class="scan" v-if="!item.labelVOS" :ref="'lessonTableImg'+index">
-          <table>
-            <tr>
-              <td colspan="5" rowspan="5" class="img-scan"><!--:logoSrc="require(`@/assets/img/logo.png`)"-->
-                <vue-qr
-                  class="scanImg"
-                  :text="'https://cb.gzfzdev.com/shoes/redirect/scanResult?qrCode=' + item.labelId"
-                  :margin="0"
-                  :logoScale="0.2"
-                  :callback="texte"
-                >
-                </vue-qr>
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: left">CN(2.5)</td>
-              <td style="font-size: 18px;font-weight: 700">{{item.cnSize}}</td>
-            </tr>
-            <tr>
-              <td style="text-align: left">EUR</td>
-              <td style="font-size: 18px;font-weight: 700">{{item.eurSize}}</td>
-            </tr>
-            <tr>
-              <td style="text-align: left">US(M's)</td>
-              <td style="font-size: 18px;font-weight: 700">{{item.usmSize}}</td>
-            </tr>
-            <tr>
-              <td style="text-align: left">US(W's)</td>
-              <td style="font-size: 18px;font-weight: 700">{{item.uswSize}}</td>
-            </tr>
-           <!-- <tr>
-              <td colspan="5">
-              <span style="padding: 0 2px 0 2px;font-size: 18px; font-weight: 700"
-                    :style="'color: '+ item.labelColors[items].col" v-for="(items,index) in 4" :key="index"
-              >{{item.labelColors[items-1].num}}</span>
-              </td>
-              <td colspan="2" style="vertical-align: bottom;font-size: 12px">{{item.productName}}</td>
-            </tr>
-            <tr>
-              <td colspan="5">
-              <span style="padding: 0 2px 0 2px;font-size: 18px;font-weight: 700"
-                    :style="'color: '+ item.labelColors[items+3].col" v-for="(items,index) in 4" :key="index"
-              >{{item.labelColors[items+3].num}}</span>
-              </td>
-              <td colspan="2" style="font-size: 12px">{{item.itemNo.split('/')[0]}}</td>
-            </tr>
-            <tr>
-              <td colspan="5">
-              <span style="padding: 0 2px 0 2px;font-size: 18px;font-weight: 700"
-                    :style="'color: '+ item.labelColors[items+7].col" v-for="(items,index) in 4" :key="index"
-              >{{item.labelColors[items+7].num}}</span>
-              </td>
-              <td colspan="2" style="vertical-align: top;font-size: 12px">{{item.itemNo.split('/')[1]}}</td>
-            </tr>-->
-            <tr>
-              <td colspan="5">MADE IN CHINA</td>
-              <td colspan="2">{{item.batchNo}}</td>
-            </tr>
-          </table>
+    <div class="printClass" v-for="(label,labeIndex) in labelList" :key="labeIndex" :ref="'packgeImg'+labeIndex">
+      <template v-for="(val, key) in label">
+        <div style="width: 60mm;height: auto" v-for="(item,index) in val" :key="index">
+          <div class="scan" v-if="!item.labelVOS && val.length>0" :ref="'lessonTableImg'+labeIndex+key">
+            <table>
+              <tr>
+                <td colspan="5" rowspan="5" class="img-scan"><!--:logoSrc="require(`@/assets/img/logo.png`)"-->
+                  <vue-qr
+                    class="scanImg"
+                    :text="'https://cb.gzfzdev.com/shoes/redirect/scanResult?qrCode=' + item.labelId"
+                    :margin="0"
+                    :logoScale="0.2"
+                  >
+                  </vue-qr>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: left">CN(2.5)</td>
+                <td style="font-size: 18px;font-weight: 700">{{item.cnSize}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: left">EUR</td>
+                <td style="font-size: 18px;font-weight: 700">{{item.eurSize}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: left">US(M's)</td>
+                <td style="font-size: 18px;font-weight: 700">{{item.usmSize}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: left">US(W's)</td>
+                <td style="font-size: 18px;font-weight: 700">{{item.uswSize}}</td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                <span
+                  style="padding: 0 2px 0 2px;font-size: 18px; font-weight: 700"
+                  :style="'color: '+ item.labelColors[items].col"
+                  v-for="(items,index) in 4"
+                  :key="index"
+                >{{item.labelColors[items-1].num}}</span>
+                </td>
+                <td colspan="2" style="vertical-align: bottom;font-size: 12px">{{item.productName}}</td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                <span style="padding: 0 2px 0 2px;font-size: 18px;font-weight: 700"
+                      :style="'color: '+ item.labelColors[items+3].col" v-for="(items,indexs) in 4" :key="indexs"
+                >{{item.labelColors[items+3].num}}</span>
+                </td>
+                <td colspan="2" style="font-size: 12px">{{item.itemNo.split('/')[0]}}</td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                <span style="padding: 0 2px 0 2px;font-size: 18px;font-weight: 700"
+                      :style="'color: '+ item.labelColors[items+7].col" v-for="(items,indexs) in 4" :key="indexs"
+                >{{item.labelColors[items+7].num}}</span>
+                </td>
+                <td colspan="2" style="vertical-align: top;font-size: 12px">{{item.itemNo.split('/')[1]}}</td>
+              </tr>
+              <tr>
+                <td colspan="5">MADE IN CHINA</td>
+                <td colspan="2">{{item.batchNo}}</td>
+              </tr>
+            </table>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
     <el-form :model="form" :rules="rules" ref="form" label-width="100px" :size="'mini'">
       <el-row :gutter="20">
@@ -105,6 +109,7 @@ import FileSaver from 'file-saver'
 import html2Canvas from 'html2canvas'
 import Canvas2Image from 'Canvas2Image'
 import vueQr from 'vue-qr'
+
 let loadingInstance = ''
 export default {
   components: {
@@ -121,6 +126,7 @@ export default {
       list: [],
       visible: null,
       columns: [
+        {text: '状态', name: 'status'},
         {text: '对照', name: 'contrastId'},
         {text: '系列', name: 'seriesName'},
         {text: '品名', name: 'productName'},
@@ -165,16 +171,20 @@ export default {
       multipleSelection: [],
       disPl: true,
       rules: {},
-
+      arr: [],
+      qrcodeArr: [],
+      random: '1',
+      codeId: '',
+      index: 0
     };
   },
   watch: {
-    index(newName, oldName){
-      if(newName != oldName && newName <= this.arr.length-1){
+    index(newName, oldName) {
+      if (newName != oldName && newName <= this.arr.length - 1) {
         setTimeout(_ => {
           this.setarr(this.arr);
-        }, 0);
-      }else {
+        }, 0)
+      } else {
         this.$nextTick(_ => {
           loadingInstance.close();
         });
@@ -188,17 +198,17 @@ export default {
     }
   },
   methods: {
-    texte(url,qid) {
+    texte(url, qid) {
       setTimeout(_ => {
-        this.createImgs();
-      }, 100);
+        this.createImgs()
+      }, 100)
     },
     setarr(arr) {
-      this.arr = arr;
-      if(this.index > this.arr.length -1) {
-        this.index = 0;
+      this.arr = arr
+      if (this.index > this.arr.length - 1) {
+        this.index = 0
       }
-      let index=this.index||0;
+      let index = this.index || 0;
       loadingInstance = this.$Loading.service({
         lock: true,
         text: '二维码码批量下载中，请稍后...',
@@ -210,64 +220,77 @@ export default {
       this.codeValue = this.initCodeVal + '?codeId=' + this.arr[index].codeId + '&codeNumber=' + this.arr[index].codeNumber;
       this.random = Math.random();
     },
-    createImgs() {
-      var that = this;
-      if(that.index <= that.arr.length -1 && that.codeId){
-        let shareContent = that.$refs.QrcodePage,
-          width = shareContent.offsetWidth,
-          height = shareContent.offsetHeight,
-          canvas = document.createElement('canvas'),
-          scale = 1;
-        canvas.width = width * scale;
-        canvas.height = height * scale;
-        canvas.style.width = (shareContent.clientWidth * scale) / 100 + 'rem';
-        canvas.style.height = (shareContent.clientHeight * scale) / 100 + 'rem';
-        canvas.getContext('2d').scale(scale, scale);
-        let opts = {
-          scale: scale,
-          canvas: canvas,
-          logging: false,
-          width: width,
-          height: height,
-          useCORS: true
-        };
-        html2Canvas(shareContent, opts)
-          .then(function(canvas) {
-            const qrContentImage = canvas.toDataURL('image/jpeg', 1.0);
-            if(that.index <= that.arr.length -1 && that.codeId){
-              that.qrcodeArr.push({
-                url: qrContentImage,
-                name: that.arr[that.index].codeNumber
-              });
-            }
-            if (that.codeId){
-              that.index ++;
-            }
-            if (that.qrcodeArr.length == that.arr.length) {
-              that.packageImages()
-              that.codeId = null
-            }
-          })
-          .catch(function(reason) {
-            console.log(reason);
+    createImgs(){
+      var that = this
+      that.qrcodeArr = []
+      var number = 0;
+      that.labelList.forEach((item, index) => {
+        var labelArr = []
+        for (var i in item) {
+          if(item[i].length>0){
+            item[i].forEach((label, labelIndex) => {
+              let shareContent = that.$refs['lessonTableImg' + index + i][0],
+                width = shareContent.offsetWidth,
+                height = shareContent.offsetHeight,
+                canvas = document.createElement('canvas'),
+                scale = 1;
+              canvas.width = width * scale;
+              canvas.height = height * scale;
+              canvas.style.width = (shareContent.clientWidth * scale) / 100 + 'rem';
+              canvas.style.height = (shareContent.clientHeight * scale) / 100 + 'rem';
+              canvas.getContext('2d').scale(scale, scale);
+              let opts = {
+                scale: scale,
+                canvas: canvas,
+                logging: false,
+                width: width,
+                height: height,
+                useCORS: true
+              };
+              html2Canvas(shareContent, opts)
+                .then(function (canvas) {
+                  const qrContentImage = canvas.toDataURL('image/png', 1.0)
+                    labelArr.push({
+                      url: qrContentImage,
+                      order: label.batchNo,
+                      name: label.productName + '-' +label.productName+'-'+label.cnSize
+                    })
+                  that.codeId = null
+                })
+                .catch(function (reason) {
+                  console.log(reason)
+                });
+            })
+          }
+        }
+          that.qrcodeArr.push({
+            arr: labelArr,
           });
-      }
+      })
+      setTimeout(_ => {
+        that.packageImages()
+      }, 1000)
+
     },
     packageImages() {
-      let that = this;
+      let that = this
       const zip = new JSZip();
       const cache = {};
       setTimeout(_ => {
         let arr = that.qrcodeArr;
-        arr.forEach((item,index)=>{
-          let fileName = item.name;
-          zip.file(fileName + '.png', item.url.substring(22),{base64: true})
-          cache[fileName] = item.url
+        console.log(arr)
+        arr.forEach((item, index) => {
+          var file = zip.folder(item['arr'][0]['order']+index)
+          item['arr'].forEach((pack)=>{
+            let fileName = pack.name;
+            file.file(fileName + '.png', pack.url.substring(22), {base64: true})
+            cache[fileName] = pack.url
+          })
         })
-        zip.generateAsync({type:"blob"}).then(content => {
-          FileSaver.saveAs(content, "二维码.zip")
-        })
-      },0)
+         zip.generateAsync({type: "blob"}).then(content => {
+           FileSaver.saveAs(content, this.form.excelName+".zip")
+         })
+      }, 0)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -288,6 +311,7 @@ export default {
             createLabel(this.multipleSelection).then(res => {
               if (res.flag) {
                 that.labelList = res.data
+                that.texte()
                 /* this.$emit('hideDialog', false)
                  this.$emit('uploadList')*/
               }

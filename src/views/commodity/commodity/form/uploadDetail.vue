@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item :label="'文件名称'">
-            <el-input v-model="form.officialWebsite" readOnly></el-input>
+            <el-input v-model="form.excelName" readOnly></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -54,6 +54,7 @@ export default {
       list: [],
       visible: null,
       columns: [
+        {text: '状态', name: 'status'},
         { text: '对照', name: 'contrastId' },
         { text: '系列', name: 'seriesName' },
         { text: '品名', name: 'productName' },
@@ -94,8 +95,7 @@ export default {
         { text: 'cn30', name: 'cnThirty' }
       ],
       form: {
-        companyName: null,
-        officialWebsite: null,
+        excelName: null,
         telephone: null
       },
       disPl: true,
@@ -124,6 +124,9 @@ export default {
       this.$refs[form].validate((valid) => {
         // 判断必填项
         if (valid) {
+          this.list.forEach((item)=>{
+            item.status = 1
+          })
           temporaryLabelsConfirm(this.list).then(res => {
             this.$emit('hideDialog', false)
             this.$emit('uploadList')
