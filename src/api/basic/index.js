@@ -188,9 +188,9 @@ export function temporaryLabelsConfirm(params) {
   })
 }
 // 订单管理-保存导入数据
-export function inputTemporaryLabel(params) {
+export function insertTemporaryLabel(params) {
   return request({
-    url: '/temporaryLabel/inputTemporaryLabel',
+    url: '/temporaryLabel/insertTemporaryLabel',
     headers: {
       'authorization': getToken('jprx'),
       'Content-Type': 'application/json'

@@ -75,6 +75,13 @@
           </el-table>
         </el-col>
       </el-row>
+      <!--<el-row :gutter="20">
+        <el-col :span="24">
+          <div class="hello">
+            <div id="mysheet" style="margin:0px;padding:0px;width:100%;height:100vh;"></div>
+          </div>
+        </el-col>
+      </el-row>-->
     </el-form>
     <div slot="footer" style="text-align:center;">
       <el-button type="primary" @click="submitUpload('form')">上传</el-button>
@@ -87,7 +94,8 @@
 import {
   getToken
 } from '@/utils/auth'
-import { getCompanyList, inputTemporaryLabel } from '@/api/basic/index'
+import { getCompanyList, insertTemporaryLabel } from '@/api/basic/index'
+/*import LuckyExcel from 'luckyexcel'*/
 export default {
   props: {
     listInfo: {
@@ -166,6 +174,34 @@ export default {
     if (this.listInfo) {
       this.form = this.listInfo
     }
+   /* // 加载 excel 文件
+    LuckyExcel.transformExcelToLuckyByUrl(
+      "http://celiang.oss-cn-hangzhou.aliyuncs.com/measurement/2022-05/30/zG4ZPphpTiDPkG1653875854220530.xlsm",
+      "", (exportJson, luckysheetfile) => {
+        console.log(exportJson);
+        console.log(luckysheetfile);
+        if (exportJson.sheets == null || exportJson.sheets.length == 0) {
+          alert("文件读取失败!");
+          return;
+        }
+        // 销毁原来的表格
+        window.luckysheet.destroy();
+        // 重新创建新表格
+        window.luckysheet.create({
+          container: 'mysheet', // 设定DOM容器的id
+          showtoolbar: false, // 是否显示工具栏
+          showinfobar: false, // 是否显示顶部信息栏
+          showstatisticBar: false, // 是否显示底部计数栏
+          sheetBottomConfig: false, // sheet页下方的添加行按钮和回到顶部按钮配置
+          allowEdit: false, // 是否允许前台编辑
+          enableAddRow: false, // 是否允许增加行
+          enableAddCol: false, // 是否允许增加列
+          sheetFormulaBar: false, // 是否显示公式栏
+          enableAddBackTop: false, //返回头部按钮
+          data: exportJson.sheets, //表格内容
+          title: exportJson.info.name //表格标题
+        });
+      });*/
   },
   methods: {
     changeCompany(val){
@@ -215,7 +251,7 @@ export default {
       this.$refs[form].validate((valid) => {
         // 判断必填项
         if (valid) {
-          inputTemporaryLabel(this.list).then(res => {
+          insertTemporaryLabel(this.list).then(res => {
             this.$emit('hideDialog', false)
             this.$emit('uploadList')
           })
@@ -234,9 +270,10 @@ export default {
     handleAvatarSuccess(res, file) {
       if(res.flag) {
         this.$message({
-          message: res.msg,
+          message: '上传成功',
           type: 'success'
         });
+        this.list = res.data
         this.fullscreenLoading = false
        /* this.$emit('hideDialog', false)
         this.$emit('uploadList')*/
