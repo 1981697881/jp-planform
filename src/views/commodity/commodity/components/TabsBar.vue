@@ -53,12 +53,15 @@ export default {
     handlerAdd() {
       this.$emit('showDialog')
     },
+    handlerUploadAdd() {
+      this.$emit('showImageDialog')
+    },
     upload() {
       this.search.name = ''
       this.$emit('uploadList')
     },
     del() {
-      if (this.selections.length > 0) {
+      /*if (this.selections.length > 0) {
         this.$confirm('是否删除，删除后将无法恢复?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -66,7 +69,7 @@ export default {
         }).then(() => {
           var idArray = []
           this.selections.forEach((item) => {
-            idArray.push({id: item.id})
+            idArray.push({excelName: item.excelName})
           })
           this.$emit('del', idArray)
         }).catch(() => {
@@ -75,6 +78,27 @@ export default {
             message: '已取消删除'
           })
         })
+      } else {
+        this.$message({
+          message: '无选中行',
+          type: 'warning'
+        })
+      }*/
+      if (this.clickData.excelName) {
+        this.$confirm('是否删除（' + this.clickData.excelName + '），删除后将无法恢复?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$emit('del', {
+            excelName: this.clickData.excelName
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       } else {
         this.$message({
           message: '无选中行',

@@ -17,7 +17,7 @@
                 </td>
               </tr>
               <tr>
-                <td style="text-align: left">CN(2.5)</td>
+                <td style="text-align: left">CN({{item.lastShape}})</td>
                 <td style="font-size: 18px;font-weight: 700">{{item.cnSize}}</td>
               </tr>
               <tr>
@@ -36,7 +36,7 @@
                 <td colspan="5">
                 <span
                   style="padding: 0 2px 0 2px;font-size: 18px; font-weight: 700"
-                  :style="'color: '+ item.labelColors[items].col"
+                  :style="'color: '+ item.labelColors[items-1].col"
                   v-for="(items,index) in 4"
                   :key="index"
                 >{{item.labelColors[items-1].num}}</span>
@@ -126,7 +126,7 @@ export default {
       list: [],
       visible: null,
       columns: [
-        {text: '状态', name: 'status'},
+        {text: '打印状态', name: 'printStatus'},
         {text: '对照', name: 'contrastId'},
         {text: '系列', name: 'seriesName'},
         {text: '品名', name: 'productName'},
@@ -164,7 +164,8 @@ export default {
         {text: 'cn27', name: 'cnTwentySeven'},
         {text: 'cn28', name: 'cnTwentyEight'},
         {text: 'cn29', name: 'cnTwentyNine'},
-        {text: 'cn30', name: 'cnThirty'}
+        {text: 'cn30', name: 'cnThirty'},
+        {text: '合计数量', name: 'allCount'}
       ],
       form: {},
       labelList: {},
@@ -220,7 +221,7 @@ export default {
       this.codeValue = this.initCodeVal + '?codeId=' + this.arr[index].codeId + '&codeNumber=' + this.arr[index].codeNumber;
       this.random = Math.random();
     },
-    createImgs(){
+    async createImgs(){
       var that = this
       that.qrcodeArr = []
       var number = 0;
@@ -228,6 +229,7 @@ export default {
         var labelArr = []
         for (var i in item) {
           if(item[i].length>0){
+           var cnArr = []
             item[i].forEach((label, labelIndex) => {
               let shareContent = that.$refs['lessonTableImg' + index + i][0],
                 width = shareContent.offsetWidth,
@@ -247,30 +249,45 @@ export default {
                 height: height,
                 useCORS: true
               };
-              html2Canvas(shareContent, opts)
-                .then(function (canvas) {
-                  const qrContentImage = canvas.toDataURL('image/png', 1.0)
-                    labelArr.push({
-                      url: qrContentImage,
-                      order: label.batchNo,
-                      name: label.productName + '-' +label.productName+'-'+label.cnSize
-                    })
-                  that.codeId = null
+               that.paintingImg(shareContent, opts).then((val) => {
+                console.log(1234567890)
+                cnArr.push({
+                  url: val,
+                  order: label.batchNo,
+                  name: label.productName + '-' +label.productName+'-'+label.cnSize
                 })
-                .catch(function (reason) {
-                  console.log(reason)
-                });
+              })
+              that.codeId = null
+            })
+            console.log(cnArr)
+            labelArr.push({
+              name: i,
+              cnArr: cnArr
             })
           }
         }
-          that.qrcodeArr.push({
-            arr: labelArr,
-          });
+        that.qrcodeArr.push({
+          arr: labelArr
+        });
       })
-      setTimeout(_ => {
-        that.packageImages()
-      }, 1000)
+      that.packageImages()
+    },
+    async paintingImg(shareContent, opts){
+      return new Promise(async(resolve, reject) => {
+        try {
+          await html2Canvas(shareContent, opts)
+            .then(function (canvas) {
+              const qrContentImage = canvas.toDataURL('image/png', 1.0)
+              resolve(qrContentImage);
+            })
+            .catch(function (reason) {
+              console.log(reason)
+            });
+        } catch (error) {
+          reject(error);
+        }
 
+      })
     },
     packageImages() {
       let that = this
@@ -280,13 +297,16 @@ export default {
         let arr = that.qrcodeArr;
         console.log(arr)
         arr.forEach((item, index) => {
-          var file = zip.folder(item['arr'][0]['order']+index)
+          var file = zip.folder(item['arr'][0]['cnArr'][0]['order'])
           item['arr'].forEach((pack)=>{
-            let fileName = pack.name;
-            file.file(fileName + '.png', pack.url.substring(22), {base64: true})
-            cache[fileName] = pack.url
+            zip.folder(pack['name'])
+            pack['cnArr'].forEach((cnSize)=>{
+              let fileName = cnSize.name;
+              file.file(fileName + '.png', cnSize.url.substring(22), {base64: true})
+              cache[fileName] = cnSize.url
+            })
           })
-        })
+        });
          zip.generateAsync({type: "blob"}).then(content => {
            FileSaver.saveAs(content, this.form.excelName+".zip")
          })

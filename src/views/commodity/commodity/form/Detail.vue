@@ -158,7 +158,8 @@ export default {
         { text: 'cn27', name: 'cnTwentySeven' },
         { text: 'cn28', name: 'cnTwentyEight' },
         { text: 'cn29', name: 'cnTwentyNine' },
-        { text: 'cn30', name: 'cnThirty' }
+        { text: 'cn30', name: 'cnThirty' },
+        {text: '合计数量', name: 'allCount'}
       ],
       fileList: [],
       disPl: true,

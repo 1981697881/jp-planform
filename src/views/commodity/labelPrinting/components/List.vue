@@ -34,7 +34,7 @@ export default {
       type: null,
       columns: [
         { text: '文件名称', name: 'excelName' },
-        { text: '导入人', name: '' }
+        { text: '导入人', name: 'userName' }
       ]
     }
   },

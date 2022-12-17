@@ -9,7 +9,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item :label="'导入人'">
-            <el-input v-model="form.telephone" readOnly></el-input>
+            <el-input v-model="form.userName" readOnly></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -54,7 +54,7 @@ export default {
       list: [],
       visible: null,
       columns: [
-        {text: '状态', name: 'status'},
+        {text: '确认状态', name: 'status'},
         { text: '对照', name: 'contrastId' },
         { text: '系列', name: 'seriesName' },
         { text: '品名', name: 'productName' },
@@ -92,11 +92,12 @@ export default {
         { text: 'cn27', name: 'cnTwentySeven' },
         { text: 'cn28', name: 'cnTwentyEight' },
         { text: 'cn29', name: 'cnTwentyNine' },
-        { text: 'cn30', name: 'cnThirty' }
+        { text: 'cn30', name: 'cnThirty' },
+        {text: '合计数量', name: 'allCount'}
       ],
       form: {
         excelName: null,
-        telephone: null
+        userName: null
       },
       disPl: true,
       rules: {
@@ -124,10 +125,10 @@ export default {
       this.$refs[form].validate((valid) => {
         // 判断必填项
         if (valid) {
-          this.list.forEach((item)=>{
+          /*this.list.forEach((item)=>{
             item.status = 1
-          })
-          temporaryLabelsConfirm(this.list).then(res => {
+          })*/
+          temporaryLabelsConfirm({excelName: this.form.excelName}).then(res => {
             this.$emit('hideDialog', false)
             this.$emit('uploadList')
           })

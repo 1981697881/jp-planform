@@ -2,7 +2,7 @@
   <div class="app-list">
     <div class="list-containerOther">
       <div>
-        <tabs-bar ref="tabs" @showDialog="handlerDialog" @showUploadDialog="handlerUploadDialog" @exportData="exportData" @del="delivery" @queryBtn="query" @uploadList="upload"/>
+        <tabs-bar ref="tabs" @showDialog="handlerDialog" @showImageDialog="handlerImageDialog" @showUploadDialog="handlerUploadDialog" @exportData="exportData" @del="delivery" @queryBtn="query" @uploadList="upload"/>
       </div>
       <list ref="list" @uploadList="uploadPage" @showDialog="handlerDialog"/>
     </div>
@@ -26,23 +26,35 @@
     >
       <upload-info @hideDialog="hideWindow" @uploadList="upload" :listInfo="listInfo"></upload-info>
     </el-dialog>
+    <el-dialog
+      :visible.sync="visible3"
+      title="图片上传"
+      v-if="visible3"
+      v-dialogDrag
+      :width="'40%'"
+      destroy-on-close
+    >
+      <image-info @hideDialog="hideWindow" @uploadList="upload" :listInfo="listInfo"></image-info>
+    </el-dialog>
   </div>
 </template>
 
 <script>import { TabsBar, List } from './components'
-import { Info, UploadInfo } from './form'
+import { Info, UploadInfo, imageInfo } from './form'
 
 export default {
   components: {
     TabsBar,
     List,
     UploadInfo,
+    imageInfo,
     Info
   },
   data() {
     return {
       visible: null,
       visible2: null,
+      visible3: null,
       rid: null,
       listInfo: null,
       floorId: null
@@ -63,6 +75,7 @@ export default {
     hideWindow(val) {
       this.visible = val
       this.visible2 = val
+      this.visible3 = val
     },
     handlerUploadDialog(obj) {
       this.listInfo = null
@@ -71,6 +84,14 @@ export default {
         this.listInfo = info
       }
       this.visible2 = true
+    },
+    handlerImageDialog(obj) {
+      this.listInfo = null
+      if (obj) {
+        const info = JSON.parse(JSON.stringify(obj))
+        this.listInfo = info
+      }
+      this.visible3 = true
     },
     handlerDialog(obj) {
       this.listInfo = null
