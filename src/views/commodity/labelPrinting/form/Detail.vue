@@ -97,7 +97,7 @@
       </el-row>
     </el-form>
     <div slot="footer" style="text-align:center;">
-      <el-button type="primary" @click="saveData('form')">导出</el-button>
+      <el-button type="primary" @click="saveData('form')" v-loading.fullscreen.lock="fullscreenLoading">导出</el-button>
     </div>
   </div>
 </template>
@@ -171,6 +171,7 @@ export default {
       labelList: {},
       multipleSelection: [],
       disPl: true,
+      fullscreenLoading: false,
       rules: {},
       arr: [],
       qrcodeArr: [],
@@ -225,7 +226,53 @@ export default {
       var that = this
       that.qrcodeArr = []
       var number = 0;
-      that.labelList.forEach((item, index) => {
+      for(var item=0;item<that.labelList.length;item++){
+        var labelArr = []
+        for (var i in that.labelList[item]) {
+          if(that.labelList[item][i].length>0){
+            var cnArr = []
+            for(var label=0;label<that.labelList[item][i].length;label++){
+              let labels=that.labelList[item][i][label];
+              let shareContent = that.$refs['lessonTableImg' + item + i][0],
+                width = shareContent.offsetWidth,
+                height = shareContent.offsetHeight,
+                canvas = document.createElement('canvas'),
+                scale = 1;
+              canvas.width = width * scale;
+              canvas.height = height * scale;
+              canvas.style.width = (shareContent.clientWidth * scale) / 100 + 'rem';
+              canvas.style.height = (shareContent.clientHeight * scale) / 100 + 'rem';
+              canvas.getContext('2d').scale(scale, scale);
+              let opts = {
+                scale: scale,
+                canvas: canvas,
+                logging: false,
+                width: width,
+                height: height,
+                useCORS: true
+              };
+              console.log(11111111)
+              await that.paintingImg(shareContent, opts).then((val) => {
+                console.log(1234567890)
+                cnArr.push({
+                  url: val,
+                  order: labels.batchNo,
+                  name: labels.productName + '-' +labels.productName+'-'+labels.cnSize
+                })
+              })
+              that.codeId = null
+            }
+            labelArr.push({
+              name: i,
+              cnArr: cnArr
+            })
+          }
+        }
+        that.qrcodeArr.push({
+          arr: labelArr
+        });
+      }
+      /*that.labelList.forEach((item, index) => {
         var labelArr = []
         for (var i in item) {
           if(item[i].length>0){
@@ -249,7 +296,8 @@ export default {
                 height: height,
                 useCORS: true
               };
-               that.paintingImg(shareContent, opts).then((val) => {
+              console.log(11111111)
+              await that.paintingImg(shareContent, opts).then((val) => {
                 console.log(1234567890)
                 cnArr.push({
                   url: val,
@@ -269,24 +317,18 @@ export default {
         that.qrcodeArr.push({
           arr: labelArr
         });
-      })
+      })*/
       that.packageImages()
     },
     async paintingImg(shareContent, opts){
       return new Promise(async(resolve, reject) => {
         try {
-          await html2Canvas(shareContent, opts)
-            .then(function (canvas) {
-              const qrContentImage = canvas.toDataURL('image/png', 1.0)
-              resolve(qrContentImage);
-            })
-            .catch(function (reason) {
-              console.log(reason)
-            });
+          const canvas  = await html2Canvas(shareContent, opts)
+          const qrContentImage = canvas.toDataURL('image/png', 1.0)
+          resolve(qrContentImage);
         } catch (error) {
           reject(error);
         }
-
       })
     },
     packageImages() {
@@ -295,20 +337,26 @@ export default {
       const cache = {};
       setTimeout(_ => {
         let arr = that.qrcodeArr;
-        console.log(arr)
         arr.forEach((item, index) => {
-          var file = zip.folder(item['arr'][0]['cnArr'][0]['order'])
+          var image = zip.folder(item['arr'][0]['cnArr'][0]['order']+'-'+index)
           item['arr'].forEach((pack)=>{
-            zip.folder(pack['name'])
-            pack['cnArr'].forEach((cnSize)=>{
+            var file = image.folder(pack['name'])
+            pack['cnArr'].forEach((cnSize,cnIndex)=>{
               let fileName = cnSize.name;
-              file.file(fileName + '.png', cnSize.url.substring(22), {base64: true})
+              file.file(fileName +'-'+cnIndex+ '.png', cnSize.url.substring(22), {base64: true})
               cache[fileName] = cnSize.url
             })
           })
         });
          zip.generateAsync({type: "blob"}).then(content => {
            FileSaver.saveAs(content, this.form.excelName+".zip")
+           that.fullscreenLoading = false;
+           that.$message({
+             type: 'success',
+             message: '导出成功'
+           })
+           that.$emit('hideDialog', false)
+           that.$emit('uploadList')
          })
       }, 0)
     },
@@ -331,6 +379,7 @@ export default {
             createLabel(this.multipleSelection).then(res => {
               if (res.flag) {
                 that.labelList = res.data
+                that.fullscreenLoading = true;
                 that.texte()
                 /* this.$emit('hideDialog', false)
                  this.$emit('uploadList')*/
